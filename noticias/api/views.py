@@ -3,8 +3,8 @@ from rest_framework.decorators import APIView #, api_view
 from rest_framework.response import Response
 from rest_framework.generics import get_object_or_404
 
-from noticias.models import Articulo
-from noticias.api.serializers import ArticuloSerializer
+from noticias.models import Articulo, Escritor
+from noticias.api.serializers import ArticuloSerializer, EscritorSerializer
 
 # @api_view(['GET', 'POST'])
 # def lista_articulos_crear_vista(request):
@@ -83,3 +83,39 @@ class detalles_articuloAPIView(APIView):
         articulo.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+class lista_escritoresAPIView(APIView):
+    
+    def get(self, request):
+        escritores = Escritor.objects.all()
+        serializer = EscritorSerializer(escritores, many=True)
+        return Response(serializer.data)
+
+    def post(self, request):
+        serializer = ArticuloSerializer(data=request.data)
+        if(serializer.is_valid()):
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class detalles_escritorAPIView(APIView):
+    def get_object(self, pk):
+        escritor = get_object_or_404(Escritor, pk=pk)
+        return escritor
+
+    def get(self, request, pk):
+        escritor = self.get_object(pk)
+        serializer = EscritorSerializer(escritor)
+        return Response(serializer.data)
+
+    def put(self, request, pk):
+        escritor = self.get_object(pk)
+        serializer = escritor(escritor, data=request.data)
+        if(serializer.is_valid()):
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk):
+        escritor = self.get_object()
+        escritor.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
