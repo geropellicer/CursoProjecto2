@@ -22,10 +22,10 @@ class ArticuloSerializer(serializers.Serializer):
         instance.autor = validated_data.get('autor', instance.autor)
         instance.titulo = validated_data.get('titulo', instance.titulo)
         instance.descripcion = validated_data.get('descripcion', instance.descripcion)
-        instance.ubicacion = validated_data.get('ubicacion', instance.ubicacion)
         instance.cuerpo = validated_data.get('cuerpo', instance.cuerpo)
-        instance.fecha_publicacion = validated_data.get('ubicacion', instance.fecha_publicacion)
-        instance.activo = validated_data.get('autor', instance.activo)
+        instance.ubicacion = validated_data.get('ubicacion', instance.ubicacion)
+        instance.fecha_publicacion = validated_data.get('fecha_publicacion', instance.fecha_publicacion)
+        instance.activo = validated_data.get('activo', instance.activo)
         instance.save()
         return instance
         
