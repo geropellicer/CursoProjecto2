@@ -30,3 +30,13 @@ class ArticuloSerializer(serializers.Serializer):
         return instance
         
 
+    def validate(self, data):
+        """Comprueba que la descipcion y el titulo sean distintos"""
+        if(data['titulo'] == data['descripcion']):
+            raise serializers.ValidationError("El titulo y la descripcion no deben ser iguales")
+        return data
+    
+    def validate_titulo(self, value):
+        if len(value) < 40:
+            raise serializers.ValidationError("Por politica editorial, los titulos deben tener mas de 40 caracteres")
+        return value
