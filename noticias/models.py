@@ -13,7 +13,7 @@ class Articulo(models.Model):
     fecha_actualizado = models.DateTimeField(auto_now =True)
     
     def __str__(self):
-        return f"{ self.autor } { self.titulo }"
+        return f"\'{ self.titulo }\' de { self.autor }"
     
 
 
